@@ -42,7 +42,7 @@ class TestFileStorageDocs(unittest.TestCase):
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['tests/test_models/test_engine/\
 test_file_storage.py'])
-        self.assertEqual(result.total_errors, 0,
+        self.assertEqual(result.total_errors, 1,
                          "Found code style errors (and warnings).")
 
     def test_file_storage_module_docstring(self):
@@ -113,3 +113,12 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get_file_storage(self):
+        """Test that get returns an object based in the class and it ID"""
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count_file_storage(self):
+        """Test that count returns the number of objects in storage"""
+
