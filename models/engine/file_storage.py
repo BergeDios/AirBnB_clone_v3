@@ -74,10 +74,7 @@ class FileStorage:
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
                 key = str(cls.__name__) + '.' + str(id)
-                try:
-                    return self.__objects[key]
-                except Exception as exception:
-                    return None
+                return self.all().get(key)
 
     def count(self, cls=None):
         """returns count of class objects or all objectrs if cls none"""
