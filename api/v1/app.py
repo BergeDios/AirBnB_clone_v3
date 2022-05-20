@@ -23,8 +23,12 @@ def errorhandler(error):
 
 
 if __name__ == "__main__":
-    if getenv('HBNB_API_HOST') and getenv('HBNB_API_PORT'):
-        app.run(host=getenv('HBNB_API_HOST'),
-                port=getenv('HBNB_API_PORT'), threaded=True)
+    if getenv('HBNB_API_HOST'):
+        jost = getenv('HBNB_API_HOST')
     else:
-        app.run(host='0.0.0.0', port=5000, threaded=True)
+        jost = '0.0.0.0'
+    if getenv('HBNB_API_PORT'):
+        puerto = getenv('HBNB_API_PORT')
+    else:
+        puerto = 5000
+    app.run(host=jost, port=puerto, threaded=True)
