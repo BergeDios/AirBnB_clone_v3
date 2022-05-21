@@ -78,11 +78,61 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_no_class(self):
         """Test that all returns all rows when no class is passed"""
+        save_objects = models.storage.all()
+        for key in save_objects:
+            self.assertIs(type(save_objects[key]),
+                          classes[save_objects[key].__class__.__name__])
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_new(self):
         """test that new adds an object to the database"""
+        save_objects = models.storage.all()
+        save_count = len(save_objects)
+        BaseModel().save()
+        self.assertEqual(save_count + 1, len(models.storage.all()))
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+        my_model = BaseModel()
+        my_model.save()
+        save_objects = models.storage.all()
+        for key in save_objects:
+            self.assertIs(type(save_objects[key]),
+                          classes[save_objects[key].__class__.__name__])
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get_file_storage(self):
+        """Test that get returns the object based on class and its ID"""
+        my_model = BaseModel()
+        my_model.save()
+        self.assertIs(type(my_model), BaseModel)
+        self.assertEqual(my_model.id, models.storage.get(BaseModel,
+                                                         my_model.id))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_file_storage(self):
+        """Test that count returns the number of objects in storage"""
+        save_objects = models.storage.all()
+        self.assertEqual(save_objects, models.storage.count())
+        self.assertIs(type(models.storage.count()), int)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get_obj_nonexistent_id(self):
+        """Test that get returns None if no object with that ID exists"""
+        self.assertIsNone(models.storage.get("City", "123"))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get_nonexistent_class(self):
+        """Test that get returns None if no object with that class exists"""
+        self.assertIsNone(models.storage.get("123", "123"))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_no_class(self):
+        """Test that count returns 0 if no object with that class exists"""
+        self.assertIs(models.storage.count("123"), 0)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_no_id(self):
+        """Test that count returns 0 if no object with that ID exists"""
+        self.assertIs(models.storage.count("City", "123"), 0)
