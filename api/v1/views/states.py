@@ -49,7 +49,7 @@ def post_state():
         new_obj = State(**data)
         storage.new(new_obj)
         storage.save()
-        return new_obj.to_dict(), 201
+        return make_response(new_obj.to_dict(), 201)
     else:
         abort(400, "Missing name")
 
@@ -67,4 +67,4 @@ def update_state(state_id):
         if key != id or key != created_at or key != updated_at:
             setattr(target, key, value)
     storage.save()
-    return target.to_dict(), 200
+    return make_response(target.to_dict(), 200)
