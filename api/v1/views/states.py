@@ -35,7 +35,6 @@ def del_state(state_id):
     for obj in objs.values():
         if obj.id == state_id:
             obj.delete()
-            storage.save()
             return empty, 200
     abort(404)
 
@@ -46,7 +45,7 @@ def post_state():
     data = request.get_json(force=True, silent=True)
     if data is None:
         abort(400, "Not a JSON")
-    if data['name'] is not None:
+    if 'name' in data.keys():
         new_obj = State(**data)
         storage.new(new_obj)
         storage.save()
