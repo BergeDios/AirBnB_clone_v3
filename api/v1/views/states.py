@@ -1,4 +1,4 @@
-#!/user/bin/python3
+#!/usr/bin/python3
 """New View for state objects, handles all default RESTful API actions"""
 from api.v1.views import app_views
 from flask import jsonify, abort, request, make_response
