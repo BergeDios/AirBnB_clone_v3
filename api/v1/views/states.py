@@ -56,6 +56,7 @@ def post_state():
 @app_views.route("/states/<state_id>", methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     """method that updates a state obj with given data"""
+    ignore = ["id", "created_at", "updated_at"]
     target = storage.get(State, state_id)
     data = request.get_json(force=True, silent=True)
     if target is None:
@@ -63,7 +64,7 @@ def update_state(state_id):
     if data is None:
         abort(400, "Not a JSON")
     for key, value in data.items():
-        if key != id or key != created_at or key != updated_at:
+        if key not in ignore:
             setattr(target, key, value)
     storage.save()
     return jsonify(target.to_dict()), 200
