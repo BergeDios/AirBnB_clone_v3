@@ -30,12 +30,11 @@ def get_state(state_id):
                  strict_slashes=False)
 def del_state(state_id):
     """method that deletes a state obj based on id or 404"""
-    empty = {}
     objs = storage.all(State)
     for obj in objs.values():
         if obj.id == state_id:
             obj.delete()
-            return empty, 200
+            return jsonify({}), 200
     abort(404)
 
 
