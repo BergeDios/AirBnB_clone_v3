@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ module for api app"""
 
+from flasgger import Swagger
 from flask import Flask, jsonify
 from flask_cors import CORS
 from models import storage
@@ -10,6 +11,25 @@ from os import getenv
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+app.config['SWAGGER'] = {
+    "swagger_version": "2.0",
+    "title": "Flasgger",
+    "headers": [
+        ('Access-Control-Allow-Origin', '*'),
+        ('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE"),
+        ('Access-Control-Allow-Credentials', "true"),
+    ],
+    "specs": [
+        {
+            "version": "1.0",
+            "title": "HBNB API",
+            "endpoint": 'v1_views',
+            "description": 'RESTFul API for HBNB',
+            "route": '/v1/views',
+        }
+    ]
+}
+swagger = Swagger(app)
 
 
 @app.teardown_appcontext
