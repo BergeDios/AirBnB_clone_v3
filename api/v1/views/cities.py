@@ -45,9 +45,13 @@ def del_city(city_id):
     abort(404)
 
 
-@app_views.route("/states/<state_id>/cities", methods=['POST'], strict_slashes=False)
+@app_views.route("/states/<state_id>/cities", methods=['POST'],
+                 strict_slashes=False)
 def post_city(state_id):
     """method that creates a new city for a state with given data"""
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
     data = request.get_json(force=True, silent=True)
     if data is None:
         abort(400, "Not a JSON")
