@@ -16,7 +16,8 @@ def amenities():
     return jsonify(list_objs)
 
 
-@app_views.route("/amenities/<amenity_id>", methods=['GET'], strict_slashes=False)
+@app_views.route("/amenities/<amenity_id>", methods=['GET'],
+                 strict_slashes=False)
 def get_amenity(amenity_id):
     """method that returns a amenity obj based on id or 404"""
     objs = storage.all(Amenity)
@@ -53,7 +54,8 @@ def post_amenity():
         abort(400, "Missing name")
 
 
-@app_views.route("/amenities/<amenity_id>", methods=['PUT'], strict_slashes=False)
+@app_views.route("/amenities/<amenity_id>", methods=['PUT'],
+                 strict_slashes=False)
 def update_amenity(amenity_id):
     """method that updates a amenity obj with given data"""
     ignore = ["id", "created_at", "updated_at"]
